@@ -20,7 +20,7 @@ interface FieldProps extends TextInputProps { }
 function Field({ className, ...props }: FieldProps) {
   return (
     <TextInput 
-      className={cn("placeholder:text-gray-200 flex-1", className)}
+      className={cn("placeholder:text-gray-200 flex-1 text-gray-100", className)}
       {...props} />
   )
 }

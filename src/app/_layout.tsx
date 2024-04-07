@@ -1,6 +1,6 @@
 import './global.css'
 
-import { Slot } from 'expo-router'
+import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import {
   useFonts,
@@ -9,6 +9,7 @@ import {
   Roboto_400Regular,
 } from "@expo-google-fonts/roboto"
 import { Loading } from '@/components/loading'
+import { View } from 'react-native'
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -22,9 +23,15 @@ export default function Layout() {
   }
 
   return (
-    <>
+    <View className='flex-1'>
       <StatusBar style='light' />
-      <Slot />
-    </>
+      
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: true,
+        }}
+      />
+    </View>
   )
 }
