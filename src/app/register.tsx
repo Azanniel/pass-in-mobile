@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, Image, KeyboardAvoidingView, View } from "react-native";
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons'
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 
@@ -13,6 +13,8 @@ export default function Register() {
     if(!name.trim() || !email.trim()) {
       return Alert.alert('Credencial', 'Por favor, preencha todos os campos')
     }
+
+    router.push('/ticket')
   }
 
   return (
