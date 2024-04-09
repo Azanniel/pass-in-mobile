@@ -1,10 +1,20 @@
-import { Image, KeyboardAvoidingView, View } from "react-native";
+import { useState } from "react";
+import { Alert, Image, KeyboardAvoidingView, View } from "react-native";
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons'
 import { Link } from "expo-router";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 
 export default function Register() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
+  function handleRegister() {
+    if(!name.trim() || !email.trim()) {
+      return Alert.alert('Credencial', 'Por favor, preencha todos os campos')
+    }
+  }
+
   return (
     <KeyboardAvoidingView className="flex-1" behavior="padding">
       <View className="flex-1 items-center justify-center bg-green-500 p-8">
@@ -17,15 +27,28 @@ export default function Register() {
         <View className='w-full mt-12 gap-3'>
           <Input>
             <FontAwesome6 name='user-circle' size={20} color="#9FF9CC" />
-            <Input.Field placeholder='Nome completo' autoComplete="name" />
+            <Input.Field 
+              placeholder='Nome completo' 
+              autoComplete="name" 
+              autoCapitalize="words" 
+              value={name} 
+              onChangeText={setName}
+            />
           </Input>
 
           <Input>
             <MaterialIcons name='alternate-email' size={20} color="#9FF9CC" />
-            <Input.Field placeholder='Email' keyboardType="email-address" autoComplete="email" />
+            <Input.Field 
+              placeholder='Email' 
+              keyboardType="email-address" 
+              autoComplete="email"
+              autoCapitalize="none"
+              value={email} 
+              onChangeText={setEmail}
+            />
           </Input>
 
-          <Button>Acessar credencial</Button>
+          <Button onPress={handleRegister}>Realizar inscrição</Button>
 
           <Link className='text-gray-100 text-base font-bold text-center mt-8' href='/'>
             Já possui ingresso?
