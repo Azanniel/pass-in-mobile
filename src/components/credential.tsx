@@ -1,6 +1,14 @@
 import { Image, ImageBackground, Text, View, TouchableOpacity } from "react-native";
+import { Feather } from '@expo/vector-icons'
+import { QrCode } from "./qr-code";
 
-export function Credential() {
+interface CredentialProps {
+  avatar?: string
+  onChangeAvatar?: () => void;
+  onShowQrCode?: () => void;
+}
+
+export function Credential({ avatar, onShowQrCode, onChangeAvatar }: CredentialProps) {
   return (
     <View className="w-full self-stretch items-center">
       <Image
@@ -21,20 +29,32 @@ export function Credential() {
           <View className="w-40 h-40 bg-black rounded-full" />
         </ImageBackground>
 
-        <Image
-          className="w-36 h-36 rounded-full -mt-24"
-          source={{ uri: 'https://github.com/azanniel.png' }}
-        />
+        {avatar ? (
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={onChangeAvatar}
+          >
+            <Image
+              className="w-36 h-36 rounded-full -mt-24"
+              source={{ uri: avatar }}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            className="w-36 h-36 rounded-full -mt-24 bg-gray-400 items-center justify-center"
+            activeOpacity={0.9}
+            onPress={onChangeAvatar}
+          >
+            <Feather name="camera" color="#28494E" size={32} />
+          </TouchableOpacity>
+        )}
 
         <Text className="text-zinc-50 text-2xl font-bold mt-4">Leandro Azanniel</Text>
         <Text className="text-zinc-300 text-base font-regular mb-4">leandro.azanniel@email.com</Text>
 
-        <Image
-          className="w-32 h-32"
-          source={require('@/assets/ticket/qrcode.png')}
-        />
+        <QrCode value="123456789" size={120} />
 
-        <TouchableOpacity activeOpacity={0.7} className="mt-6">
+        <TouchableOpacity activeOpacity={0.7} className="mt-6" onPress={onShowQrCode}>
           <Text className="font-medium text-orange-500 text-sm">Ampliar QrCode</Text>
         </TouchableOpacity>
       </View>

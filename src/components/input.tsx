@@ -9,7 +9,7 @@ interface InputProps {
 
 function Input({ className, children }: InputProps) {
   return (
-    <View className={cn("w-full h-14 flex-row items-center gap-3 px-3 border border-green-400 rounded-lg", className)}>
+    <View className={cn("w-full h-14 flex-row items-center gap-3 p-3 border border-green-400 rounded-lg", className)}>
       {children}
     </View>
   )
