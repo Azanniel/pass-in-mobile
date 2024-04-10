@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { View, Image, Alert } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { Input } from '@/components/input'
 import { Button } from '@/components/button'
 
@@ -12,6 +12,8 @@ export default function App() {
     if(!code.trim()) {
       return Alert.alert('Credencial', 'Por favor, insira o código do ingresso')
     }
+
+    router.push('/ticket')
   }
 
   return (
