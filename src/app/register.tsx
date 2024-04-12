@@ -2,19 +2,52 @@ import { useState } from "react";
 import { Alert, Image, KeyboardAvoidingView, View } from "react-native";
 import { FontAwesome6, MaterialIcons } from '@expo/vector-icons'
 import { Link, router } from "expo-router";
+import { isAxiosError } from "axios";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
+import { api } from "@/lib/axios";
+
+const EVENT_ID = "9e9bd979-9d10-4915-b339-3786b1634f33"
 
 export default function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  function handleRegister() {
-    if(!name.trim() || !email.trim()) {
-      return Alert.alert('Credencial', 'Por favor, preencha todos os campos')
+  async function handleRegister() {
+    try {
+      if(!name.trim() || !email.trim()) {
+        return Alert.alert('Credencial', 'Por favor, preencha todos os campos')
+      }
+  
+      setIsSubmitting(true)
+  
+      const response = await api.post(`/events/${EVENT_ID}/attendees`, {
+        name,
+        email
+      })
+
+      if(response.data.attendeeId){
+        Alert.alert('Credencial', 'Inscrição realizada com sucesso!', [
+          {
+            text: 'Ok',
+            onPress: () => router.push('/ticket')
+          }
+        ])
+      }
+    } catch (error) {
+      console.error(error)
+
+      if(isAxiosError(error)) {
+        if(String(error.response?.data.message).includes('already registered')) {
+          return Alert.alert('Credencial', 'Inscrição já efetuada')
+        }
+      }
+
+      Alert.alert('Credencial', 'Não foi possível realizar a inscrição')
+    } finally {
+      setIsSubmitting(false)
     }
-
-    router.push('/ticket')
   }
 
   return (
@@ -50,7 +83,7 @@ export default function Register() {
             />
           </Input>
 
-          <Button onPress={handleRegister}>Realizar inscrição</Button>
+          <Button isLoading={isSubmitting} onPress={handleRegister}>Realizar inscrição</Button>
 
           <Link className='text-gray-100 text-base font-bold text-center mt-8' href='/'>
             Já possui ingresso?

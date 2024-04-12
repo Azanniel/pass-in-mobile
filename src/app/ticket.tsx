@@ -33,7 +33,7 @@ export default function Ticket() {
       <Header title="Minha credencial" />
 
       <ScrollView
-        className="-mt-28 -z-10"
+        className="-mt-36 -z-10"
         contentContainerClassName="p-8"
         showsVerticalScrollIndicator={false}
       >

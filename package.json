@@ -13,6 +13,7 @@
     "@expo-google-fonts/roboto": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.0.2",
+    "axios": "^1.6.8",
     "clsx": "^2.1.0",
     "expo": "^50.0.15",
     "expo-font": "~11.10.3",
