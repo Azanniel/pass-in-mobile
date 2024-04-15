@@ -36,7 +36,8 @@ export default function Register() {
         ])
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      setIsSubmitting(false)
 
       if(isAxiosError(error)) {
         if(String(error.response?.data.message).includes('already registered')) {

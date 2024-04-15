@@ -4,16 +4,29 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Link, router } from 'expo-router'
 import { Input } from '@/components/input'
 import { Button } from '@/components/button'
+import { api } from '@/lib/axios'
 
 export default function App() {
   const [code, setCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  function handleAccessCredential() {
-    if(!code.trim()) {
-      return Alert.alert('Credencial', 'Por favor, insira o código do ingresso')
+  async function handleAccessCredential() {
+    try {
+      if(!code.trim()) {
+        return Alert.alert('Ingresso', 'Por favor, insira o código do ingresso')
+      }
+  
+      setIsLoading(true)
+
+      const { data } = await api.get(`/attendees/${code}/badge`)
+
+      console.log(data)
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error)
+
+      Alert.alert('Ingresso', 'Ingresso não encontrado')
     }
-
-    router.push('/ticket')
   }
 
   return (
