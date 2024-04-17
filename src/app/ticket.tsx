@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Alert, Modal, ScrollView, Text, TouchableOpacity, View, Share } from "react-native";
+import { Redirect, router } from "expo-router";
+import { MotiView } from 'moti'
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'
 import { Header } from "@/components/header";
@@ -7,7 +9,6 @@ import { Credential } from "@/components/credential";
 import { Button } from "@/components/button";
 import { QrCode } from "@/components/qr-code";
 import { useBadgeStorage } from "@/storage/badge-storage";
-import { Redirect, router } from "expo-router";
 
 export default function Ticket() {
   const [expandQrCode, setExpandQrCode] = useState(false)
@@ -22,7 +23,7 @@ export default function Ticket() {
         aspect: [4, 4]
       })
 
-      if(result.assets) {
+      if (result.assets) {
         badgeStorage.updateAvatar(result.assets[0].uri)
       }
     } catch (error) {
@@ -33,13 +34,13 @@ export default function Ticket() {
 
   function handleRemove() {
     badgeStorage.delete()
-    
+
     return router.replace('/')
   }
 
   async function handleShare() {
     try {
-      if(!badgeStorage.badge) {
+      if (!badgeStorage.badge) {
         return
       }
 
@@ -53,7 +54,7 @@ export default function Ticket() {
     }
   }
 
-  if(!badgeStorage.badge) {
+  if (!badgeStorage.badge) {
     return <Redirect href='/' />
   }
 
@@ -66,19 +67,29 @@ export default function Ticket() {
         contentContainerClassName="p-8"
         showsVerticalScrollIndicator={false}
       >
-        <Credential 
+        <Credential
           data={badgeStorage.badge}
-          avatar={badgeStorage.badge.image} 
+          avatar={badgeStorage.badge.image}
           onChangeAvatar={handleSelectImage}
           onShowQrCode={() => setExpandQrCode(true)}
         />
 
-        <FontAwesome
-          className="self-center my-6"
-          name="angle-double-down"
-          size={24}
-          color={'#8D8D99'}
-        />
+        <MotiView
+          from={{ translateY: 0 }}
+          animate={{ translateY: 10 }}
+          transition={{
+            loop: true,
+            type: 'timing',
+            duration: 800
+          }}
+        >
+          <FontAwesome
+            className="self-center my-6"
+            name="angle-double-down"
+            size={24}
+            color={'#8D8D99'}
+          />
+        </MotiView>
 
         <Text className="text-zinc-50 font-bold text-2xl mt-4">
           Compartilhar credencial
@@ -103,7 +114,7 @@ export default function Ticket() {
         <View className="flex-1 bg-green-500 items-center justify-center">
           <QrCode value="123456789" size={300} />
           <TouchableOpacity className="mt-10" activeOpacity={0.7} onPress={() => setExpandQrCode(false)}>
-          <Text className="font-medium text-orange-500 text-sm text-center">Fechar QrCode</Text>
+            <Text className="font-medium text-orange-500 text-sm text-center">Fechar QrCode</Text>
           </TouchableOpacity>
         </View>
       </Modal>
