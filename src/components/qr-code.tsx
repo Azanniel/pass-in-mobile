@@ -1,4 +1,4 @@
-import QRCodeSvg from "react-native-qrcode-svg";
+import QRCodeSvg from 'react-native-qrcode-svg'
 
 interface QrCodeProps {
   value: string
@@ -7,11 +7,11 @@ interface QrCodeProps {
 
 export function QrCode(props: QrCodeProps) {
   return (
-    <QRCodeSvg 
-      value={props.value} 
+    <QRCodeSvg
+      value={props.value}
       size={props.size}
       color="#FFF"
       backgroundColor="transparent"
     />
-  );
+  )
 }

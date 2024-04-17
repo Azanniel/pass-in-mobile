@@ -19,33 +19,36 @@ interface BadgeStorageProps {
 }
 
 export const useBadgeStorage = create(
-  persist<BadgeStorageProps>((set, get) => {
-    return ({
-      badge: null,
+  persist<BadgeStorageProps>(
+    (set, get) => {
+      return {
+        badge: null,
 
-      save: (value) => {
-        set({ badge: value })
-      },
+        save: (value) => {
+          set({ badge: value })
+        },
 
-      updateAvatar: (uri) => {
-        const { badge } = get()
+        updateAvatar: (uri) => {
+          const { badge } = get()
 
-        if (badge) {
-          set({
-            badge: {
-              ...badge,
-              image: uri
-            }
-          })
-        }
-      },
-      
-      delete: () => {
-        set({ badge: null })
+          if (badge) {
+            set({
+              badge: {
+                ...badge,
+                image: uri,
+              },
+            })
+          }
+        },
+
+        delete: () => {
+          set({ badge: null })
+        },
       }
-    })
-  }, {
-    name: 'nlw-unite-badge',
-    storage: createJSONStorage(() => AsyncStorage)
-  })
+    },
+    {
+      name: 'nlw-unite-badge',
+      storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
 )

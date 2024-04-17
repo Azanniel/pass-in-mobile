@@ -1,14 +1,22 @@
-import { useState } from "react";
-import { Alert, Modal, ScrollView, Text, TouchableOpacity, View, Share } from "react-native";
-import { Redirect, router } from "expo-router";
+import { useState } from 'react'
+import {
+  Alert,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  Share,
+} from 'react-native'
+import { Redirect, router } from 'expo-router'
 import { MotiView } from 'moti'
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome } from '@expo/vector-icons'
-import { Header } from "@/components/header";
-import { Credential } from "@/components/credential";
-import { Button } from "@/components/button";
-import { QrCode } from "@/components/qr-code";
-import { useBadgeStorage } from "@/storage/badge-storage";
+import { Header } from '@/components/header'
+import { Credential } from '@/components/credential'
+import { Button } from '@/components/button'
+import { QrCode } from '@/components/qr-code'
+import { useBadgeStorage } from '@/storage/badge-storage'
 
 export default function Ticket() {
   const [expandQrCode, setExpandQrCode] = useState(false)
@@ -20,7 +28,7 @@ export default function Ticket() {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [4, 4]
+        aspect: [4, 4],
       })
 
       if (result.assets) {
@@ -46,7 +54,7 @@ export default function Ticket() {
 
       await Share.share({
         title: 'Minha credencial',
-        message: `Minha credencial do evento: ${badgeStorage.badge.checkInURL}`
+        message: `Minha credencial do evento: ${badgeStorage.badge.checkInURL}`,
       })
     } catch (error) {
       console.log(error)
@@ -55,7 +63,7 @@ export default function Ticket() {
   }
 
   if (!badgeStorage.badge) {
-    return <Redirect href='/' />
+    return <Redirect href="/" />
   }
 
   return (
@@ -80,7 +88,7 @@ export default function Ticket() {
           transition={{
             loop: true,
             type: 'timing',
-            duration: 800
+            duration: 800,
           }}
         >
           <FontAwesome
@@ -96,7 +104,8 @@ export default function Ticket() {
         </Text>
 
         <Text className="text-white font-regular text-base mt-1 mb-6">
-          Mostre ao mundo que você vai participar do Evento {badgeStorage.badge.eventTitle}!
+          Mostre ao mundo que você vai participar do Evento{' '}
+          {badgeStorage.badge.eventTitle}!
         </Text>
 
         <Button onPress={handleShare}>Compartilhar</Button>
@@ -106,15 +115,23 @@ export default function Ticket() {
           activeOpacity={0.7}
           onPress={handleRemove}
         >
-          <Text className="text-base text-zinc-50 font-bold text-center">Remover ingresso</Text>
+          <Text className="text-base text-zinc-50 font-bold text-center">
+            Remover ingresso
+          </Text>
         </TouchableOpacity>
       </ScrollView>
 
       <Modal visible={expandQrCode} animationType="slide" statusBarTranslucent>
         <View className="flex-1 bg-green-500 items-center justify-center">
           <QrCode value="123456789" size={300} />
-          <TouchableOpacity className="mt-10" activeOpacity={0.7} onPress={() => setExpandQrCode(false)}>
-            <Text className="font-medium text-orange-500 text-sm text-center">Fechar QrCode</Text>
+          <TouchableOpacity
+            className="mt-10"
+            activeOpacity={0.7}
+            onPress={() => setExpandQrCode(false)}
+          >
+            <Text className="font-medium text-orange-500 text-sm text-center">
+              Fechar QrCode
+            </Text>
           </TouchableOpacity>
         </View>
       </Modal>

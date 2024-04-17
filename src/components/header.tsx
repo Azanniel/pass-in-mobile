@@ -1,7 +1,7 @@
-import { Text, View } from "react-native";
+import { Text, View } from 'react-native'
 
 interface HeaderProps {
-  title: string;
+  title: string
 }
 
 export function Header(props: HeaderProps) {
@@ -11,5 +11,5 @@ export function Header(props: HeaderProps) {
         {props.title}
       </Text>
     </View>
-  );
+  )
 }
