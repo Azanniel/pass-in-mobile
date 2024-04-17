@@ -1,3 +1,5 @@
+![image](https://github.com/Azanniel/nlw-unite-mobile/assets/71537090/4e9d513f-0440-484e-97cc-1f901cc37f77)
+
 # Trilha React Native - NLW Unite
 
 > Juntos vamos construir uma aplicação para inscrição em um evento
