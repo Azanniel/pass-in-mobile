@@ -6,6 +6,7 @@ import { isAxiosError } from "axios";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 import { api } from "@/lib/axios";
+import { useBadgeStorage } from "@/storage/badge-storage";
 
 const EVENT_ID = "9e9bd979-9d10-4915-b339-3786b1634f33"
 
@@ -13,6 +14,8 @@ export default function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const badgeStorage = useBadgeStorage()
 
   async function handleRegister() {
     try {
@@ -28,6 +31,10 @@ export default function Register() {
       })
 
       if(response.data.attendeeId){
+        const { data: badgeResponse } = await api.get(`/attendees/${response.data.attendeeId}/badge`)
+
+        badgeStorage.save(badgeResponse.badge)
+
         Alert.alert('Credencial', 'Inscrição realizada com sucesso!', [
           {
             text: 'Ok',

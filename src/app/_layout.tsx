@@ -23,7 +23,7 @@ export default function Layout() {
   }
 
   return (
-    <View className='flex-1'>
+    <View className='flex-1 bg-green-500'>
       <StatusBar style='light' />
       
       <Stack

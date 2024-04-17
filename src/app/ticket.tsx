@@ -6,10 +6,13 @@ import { Header } from "@/components/header";
 import { Credential } from "@/components/credential";
 import { Button } from "@/components/button";
 import { QrCode } from "@/components/qr-code";
+import { useBadgeStorage } from "@/storage/badge-storage";
+import { Redirect, router } from "expo-router";
 
 export default function Ticket() {
-  const [image, setImage] = useState('')
   const [expandQrCode, setExpandQrCode] = useState(false)
+
+  const badgeStorage = useBadgeStorage()
 
   async function handleSelectImage() {
     try {
@@ -20,12 +23,22 @@ export default function Ticket() {
       })
 
       if(result.assets) {
-        setImage(result.assets[0].uri)
+        badgeStorage.updateAvatar(result.assets[0].uri)
       }
     } catch (error) {
       console.error(error)
       Alert.alert('Foto', 'Não foi possível escolher uma imagem')
     }
+  }
+
+  function handleRemove() {
+    badgeStorage.delete()
+    
+    return router.replace('/')
+  }
+
+  if(!badgeStorage.badge) {
+    return <Redirect href='/' />
   }
 
   return (
@@ -38,7 +51,8 @@ export default function Ticket() {
         showsVerticalScrollIndicator={false}
       >
         <Credential 
-          avatar={image} 
+          data={badgeStorage.badge}
+          avatar={badgeStorage.badge.image} 
           onChangeAvatar={handleSelectImage}
           onShowQrCode={() => setExpandQrCode(true)}
         />
@@ -55,7 +69,7 @@ export default function Ticket() {
         </Text>
 
         <Text className="text-white font-regular text-base mt-1 mb-6">
-          Mostre ao mundo que você vai participar do Unite Submit!
+          Mostre ao mundo que você vai participar do Evento {badgeStorage.badge.eventTitle}!
         </Text>
 
         <Button>Compartilhar</Button>
@@ -63,6 +77,7 @@ export default function Ticket() {
         <TouchableOpacity
           className="mt-10"
           activeOpacity={0.7}
+          onPress={handleRemove}
         >
           <Text className="text-base text-zinc-50 font-bold text-center">Remover ingresso</Text>
         </TouchableOpacity>

@@ -1,14 +1,16 @@
 import { Image, ImageBackground, Text, View, TouchableOpacity } from "react-native";
 import { Feather } from '@expo/vector-icons'
 import { QrCode } from "./qr-code";
+import { Badge } from "@/storage/badge-storage";
 
 interface CredentialProps {
+  data: Badge
   avatar?: string
   onChangeAvatar?: () => void;
   onShowQrCode?: () => void;
 }
 
-export function Credential({ avatar, onShowQrCode, onChangeAvatar }: CredentialProps) {
+export function Credential({ data, avatar, onShowQrCode, onChangeAvatar }: CredentialProps) {
   return (
     <View className="w-full self-stretch items-center">
       <Image
@@ -22,8 +24,8 @@ export function Credential({ avatar, onShowQrCode, onChangeAvatar }: CredentialP
           source={require('@/assets/ticket/header.png')}
         >
           <View className="w-full items-center flex-row justify-between">
-            <Text className="text-zinc-50 text-sm font-bold">Unite Submit</Text>
-            <Text className="text-zinc-50 text-sm font-bold">#123456789</Text>
+            <Text className="text-zinc-50 text-sm font-bold">{data.eventTitle}</Text>
+            <Text className="text-zinc-50 text-sm font-bold">#{String(data.id).padStart(6, '0')}</Text>
           </View>
 
           <View className="w-40 h-40 bg-black rounded-full" />
@@ -49,10 +51,10 @@ export function Credential({ avatar, onShowQrCode, onChangeAvatar }: CredentialP
           </TouchableOpacity>
         )}
 
-        <Text className="text-zinc-50 text-2xl font-bold mt-4">Leandro Azanniel</Text>
-        <Text className="text-zinc-300 text-base font-regular mb-4">leandro.azanniel@email.com</Text>
+        <Text className="text-zinc-50 text-2xl font-bold mt-4">{data.name}</Text>
+        <Text className="text-zinc-300 text-base font-regular mb-4">{data.email}</Text>
 
-        <QrCode value="123456789" size={120} />
+        <QrCode value={data.checkInURL} size={120} />
 
         <TouchableOpacity activeOpacity={0.7} className="mt-6" onPress={onShowQrCode}>
           <Text className="font-medium text-orange-500 text-sm">Ampliar QrCode</Text>

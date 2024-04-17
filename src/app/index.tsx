@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { View, Image, Alert } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Link, router } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
 import { Input } from '@/components/input'
 import { Button } from '@/components/button'
 import { api } from '@/lib/axios'
+import { useBadgeStorage } from '@/storage/badge-storage'
 
 export default function App() {
   const [code, setCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  const badgeStorage = useBadgeStorage()
 
   async function handleAccessCredential() {
     try {
@@ -20,13 +23,17 @@ export default function App() {
 
       const { data } = await api.get(`/attendees/${code}/badge`)
 
-      console.log(data)
+      badgeStorage.save(data.badge)
     } catch (error) {
       setIsLoading(false)
       console.log(error)
 
       Alert.alert('Ingresso', 'Ingresso não encontrado')
     }
+  }
+
+  if(badgeStorage.badge?.checkInURL) {
+    return <Redirect href='/ticket' />
   }
 
   return (
@@ -43,7 +50,7 @@ export default function App() {
           <Input.Field placeholder='Código do ingresso' value={code} onChangeText={setCode} />
         </Input>
 
-        <Button onPress={handleAccessCredential}>Acessar credencial</Button>
+        <Button onPress={handleAccessCredential} isLoading={isLoading}>Acessar credencial</Button>
 
         <Link className='text-gray-100 text-base font-bold text-center mt-8' href='/register'>
           Ainda não possui ingresso?
